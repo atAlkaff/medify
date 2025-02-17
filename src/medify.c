@@ -55,11 +55,32 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     return msg.wParam;
 
-    // open a dialog box at specifc time (6 pm)
+    // TODO: open a dialog box at specifc time (e.g. 6 pm)
+    //       use task scheduler for this
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, 
     WPARAM wParam, LPARAM lParam)
 {
+    // TODO: use child windows to build a CRUD interface with medicines list
+    //       listbox control? to display list, buttons for delete (and edit?)
+    //       edit control and button to add
+    // TODO: use local file to store list
+    switch(message)
+    {
+        case WM_CREATE:
+        {
+            RECT rc;
+            GetClientRect(hwnd, &rc);
+            InvalidateRect(hwnd, &rc, TRUE);
+        }
+
+        case WM_PAINT:
+        {
+            HDC hdc = GetDC(hwnd);
+            ReleaseDC(hwnd, hdc);
+        }
+    }
+
     return DefWindowProcW(hwnd, message, wParam, lParam);
 }
