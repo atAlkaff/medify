@@ -20,6 +20,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         return MedifyHandleWindowsErrors();
     }
 
+    if (!MedifyInitializeCOM())
+    {
+        return 1;
+    }
+
     MSG msg;
 
     while (GetMessageW(&msg, NULL, 0, 0))
@@ -72,6 +77,38 @@ bool MedifyCreateMainWindow(APP_STATE *app)
     );
 
     return (app->hwnd != NULL);
+}
+
+bool MedifyInitializeCOM(void)
+{
+    HRESULT hRes = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+
+    if (FAILED(hRes))
+    {
+        printf("CoInitializeEx failed: %x\n", hRes);
+        return false;
+    }
+
+    hRes = CoInitializeSecurity(
+        NULL,
+        -1,
+        NULL,
+        NULL,
+        RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
+        RPC_C_IMP_LEVEL_IMPERSONATE,
+        NULL,
+        0,
+        NULL
+    );
+
+    if (FAILED(hRes))
+    {
+        printf("\nCoInitializeSecurity failed: %x", hRes);
+        CoUninitialize();
+        return false;
+    }
+
+    return true;
 }
 
 int MedifyHandleWindowsErrors(void)

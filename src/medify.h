@@ -6,9 +6,11 @@
 #define _UNICODE
 #endif
 
+#define _WIN32_DCOM
+
 #include <windows.h>
-#include <taskschd.h>
 #include <stdio.h>
+#include <taskschd.h>
 #include <stdbool.h>
 
 typedef struct APP_STATE
@@ -25,5 +27,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message,
 
 ATOM MedifyInitializeWndClass(APP_STATE *app);
 bool MedifyCreateMainWindow(APP_STATE *app);
+
+bool MedifyInitializeCOM(void);
 
 int MedifyHandleWindowsErrors(void);
