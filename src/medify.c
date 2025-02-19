@@ -5,45 +5,15 @@ APP_STATE app;
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
     PWSTR szCmdLine, int iCmdShow)
 {
-    WNDCLASSEXW wcex;
-
     app.szClassName = L"medify";
     app.hInstance = hInstance;
     app.lpfnWndProc = WndProc;
 
-    wcex.cbSize = sizeof(wcex);
-    wcex.style  = CS_VREDRAW | CS_HREDRAW;
-    wcex.lpfnWndProc = app.lpfnWndProc;
-    wcex.cbClsExtra = 0;
-    wcex.cbWndExtra = 0;
-    wcex.hInstance = app.hInstance;
-    wcex.hIcon = LoadIconW(NULL, IDI_APPLICATION); // TODO: app icon
-    wcex.hCursor = LoadCursorW(NULL, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-    wcex.lpszMenuName = NULL;
-    wcex.lpszClassName = app.szClassName;
-    wcex.hIconSm = NULL; // TODO: add app small icon
-
-    if (!RegisterClassExW(&wcex))
+    if (!MedifyInitializeWndClass(&app))
     {
-        printf("Error %d: RegisterClassExW failed", GetLastError());
+        printf("Error %d: window class registration failed", GetLastError());
         return 1;
     }
-
-    CreateWindowExW(
-        0,
-        app.szClassName,
-        L"Medify",
-        WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-        CW_USEDEFAULT,
-        CW_USEDEFAULT,
-        CW_USEDEFAULT,
-        CW_USEDEFAULT,
-        NULL,
-        NULL,
-        hInstance,
-        NULL
-    );
 
     MSG msg;
 
@@ -57,6 +27,44 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     // TODO: open a dialog box at specifc time (e.g. 6 pm)
     //       use task scheduler for this
+}
+
+ATOM MedifyInitializeWndClass(APP_STATE *app)
+{
+    WNDCLASSEXW wcex;
+
+    wcex.cbSize = sizeof(wcex);
+    wcex.style  = CS_VREDRAW | CS_HREDRAW;
+    wcex.lpfnWndProc = app->lpfnWndProc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = app->hInstance;
+    wcex.hIcon = LoadIconW(NULL, IDI_APPLICATION); // TODO: app icon
+    wcex.hCursor = LoadCursorW(NULL, IDC_ARROW);
+    wcex.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+    wcex.lpszMenuName = NULL;
+    wcex.lpszClassName = app->szClassName;
+    wcex.hIconSm = NULL; // TODO: add app small icon
+
+    return RegisterClassExW(&wcex);
+}
+
+void MedifyCreateMainWindow(APP_STATE *app)
+{
+    app->hwnd = CreateWindowExW(
+        0,
+        app->szClassName,
+        L"Medify",
+        WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+        CW_USEDEFAULT,
+        CW_USEDEFAULT,
+        CW_USEDEFAULT,
+        CW_USEDEFAULT,
+        NULL,
+        NULL,
+        app->hInstance,
+        NULL
+    );
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, 
