@@ -17,12 +17,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = app.hInstance;
-    wcex.hIcon = LoadIconW(NULL, IDI_APPLICATION);
+    wcex.hIcon = LoadIconW(NULL, IDI_APPLICATION); // TODO: app icon
     wcex.hCursor = LoadCursorW(NULL, IDC_ARROW);
     wcex.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
     wcex.lpszMenuName = NULL;
     wcex.lpszClassName = app.szClassName;
-    wcex.hIconSm = NULL;
+    wcex.hIconSm = NULL; // TODO: add app small icon
 
     if (!RegisterClassExW(&wcex))
     {
