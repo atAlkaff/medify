@@ -6,16 +6,19 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     PWSTR szCmdLine, int iCmdShow)
 {
     app.szClassName = L"medify";
+    app.szWindowTitle = L"Medify";
     app.hInstance = hInstance;
     app.lpfnWndProc = WndProc;
 
     if (!MedifyInitializeWndClass(&app))
     {
-        printf("Error %d: window class registration failed", GetLastError());
-        return 1;
+        return MedifyHandleWindowsErrors();
     }
 
-    MedifyCreateMainWindow(&app);
+    if (!MedifyCreateMainWindow(&app))
+    {
+        return MedifyHandleWindowsErrors();
+    }
 
     MSG msg;
 
@@ -51,12 +54,12 @@ ATOM MedifyInitializeWndClass(APP_STATE *app)
     return RegisterClassExW(&wcex);
 }
 
-void MedifyCreateMainWindow(APP_STATE *app)
+bool MedifyCreateMainWindow(APP_STATE *app)
 {
     app->hwnd = CreateWindowExW(
         0,
         app->szClassName,
-        L"Medify",
+        app->szWindowTitle,
         WS_OVERLAPPEDWINDOW | WS_VISIBLE,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
@@ -67,6 +70,16 @@ void MedifyCreateMainWindow(APP_STATE *app)
         app->hInstance,
         NULL
     );
+
+    return (app->hwnd != NULL);
+}
+
+int MedifyHandleWindowsErrors(void)
+{
+    int errorCode = GetLastError();
+
+    printf("Error: Windows Code %d, check MS Docs.\n", errorCode);
+    return errorCode;
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, 
