@@ -10,8 +10,13 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <comdef.h>
+#include <wincred.h>
 #include <taskschd.h>
-#include <stdbool.h>
+
+#pragma comment(lib, "taskschd.lib")
+#pragma comment(lib, "comsupp.lib")
+#pragma comment(lib, "credui.lib")
 
 typedef struct APP_STATE
 {
