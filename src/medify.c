@@ -15,6 +15,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         return 1;
     }
 
+    MedifyCreateMainWindow(&app);
+
     MSG msg;
 
     while (GetMessageW(&msg, NULL, 0, 0))
