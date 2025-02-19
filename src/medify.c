@@ -37,6 +37,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     // TODO: open a dialog box at specifc time (e.g. 6 pm)
     //       use task scheduler for this
+    //       Do this for every medicine, read data file first
+    //       Main Window is for CRUD operations not reminding
+
+    // TODO: Should the ITaskService open this program or another one?
+    //       And should I add code to initialize this all on system startup
+    //       or build as DLL? (Would a DLL change anything?)
 }
 
 ATOM MedifyInitializeWndClass(APP_STATE *app)
